@@ -39,7 +39,11 @@ public class StepsMonitor extends Thread {
 			stepsReader = new BufferedReader(new FileReader(path));
 		    String stepsLine;
 			while((stepsLine = stepsReader.readLine()) != null){
-				
+				if(stepsLine.equals("s")) {
+					currentSteps += 1;
+				}
+				// get next step data point every 3 seconds
+				Thread.sleep(3000);
 			}
 		}
 		catch(IOException e){
