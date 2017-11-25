@@ -17,13 +17,14 @@ public class HeartRateMonitor extends Thread {
 		startMonitoringPulse();
 	}
 	public void startMonitoringPulse() {			
+		while(true) {
 			try {
 				readPulseDataFromFile("pulse_data.txt");
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+		}		
 	}
 	
 	public float getCurrentHeartRate() {
@@ -37,8 +38,9 @@ public class HeartRateMonitor extends Thread {
     			pulseReader = new BufferedReader(new FileReader(path));
     			String pulse;
     			while((pulse = pulseReader.readLine()) != null){
-    				currentHeartRate = Float.parseFloat(pulse);
-    				Thread.sleep(10000);
+    					currentHeartRate = Float.parseFloat(pulse);
+    					// get next heart rate data point every 10 seconds
+    					Thread.sleep(10000);
     			}
     		}
     		catch(IOException e){
