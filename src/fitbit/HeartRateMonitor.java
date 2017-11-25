@@ -24,8 +24,7 @@ public class HeartRateMonitor extends Thread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-			
+		}		
 	}
 	
 	public float getCurrentHeartRate() {
@@ -40,7 +39,8 @@ public class HeartRateMonitor extends Thread {
     			String pulse;
     			while((pulse = pulseReader.readLine()) != null){
     					currentHeartRate = Float.parseFloat(pulse);
-    					Thread.sleep(2000);
+    					// get next heart rate data point every 10 seconds
+    					Thread.sleep(10000);
     			}
     		}
     		catch(IOException e){
