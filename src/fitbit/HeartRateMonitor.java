@@ -39,8 +39,8 @@ public class HeartRateMonitor extends Thread {
     			String pulse;
     			while((pulse = pulseReader.readLine()) != null){
     					currentHeartRate = Float.parseFloat(pulse);
-    					// get next heart rate data point every 10 seconds
-    					Thread.sleep(10000);
+    					// get next heart rate data point every 5 seconds
+    					Thread.sleep(5000);
     			}
     		}
     		catch(IOException e){
