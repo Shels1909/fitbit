@@ -1,8 +1,12 @@
 package fitbit;
 
-import javax.swing.*; // Import of the JavaSwing library 
+import java.awt.Container;
+import java.awt.GridLayout;
 
-public class Display {
+import javax.swing.*; // Import of the JavaSwing library 
+import javax.swing.JFrame; // Import JFrame library 
+
+public class Display extends JPanel{
 	
 	/**
 	 * This class is responsible for creating the Display of the
@@ -27,12 +31,44 @@ public class Display {
 	 * 		to cycle between them.
 	 */
 	
+	private static final long serialVersionUID = 1L;
+
+	
 	JFrame frame; // Instantiate a new window frame 
 	
     public Display(JFrame frame) {
-    	
+
         this.frame = frame; // Create the frame 
         
+    }
+    
+    private static void createAndShowGUI() {
+        //Make sure we have nice window decorations.
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        JDialog.setDefaultLookAndFeelDecorated(true);
+       
+        //Create and set up the window.
+        JFrame frame = new JFrame("Fitbit");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+
+        //Set up the content pane.
+        Container contentPane = frame.getContentPane();
+        contentPane.setLayout(new GridLayout(1,1));
+        contentPane.add(new Display(frame));
+
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        //Schedule a job for the event-dispatching thread:
+        //creating and showing this application's GUI.
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
     }
 
 }
