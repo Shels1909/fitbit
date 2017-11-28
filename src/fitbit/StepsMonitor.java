@@ -7,7 +7,6 @@ import java.io.IOException;
 public class StepsMonitor extends Thread {
 	
 	private int currentSteps;
-
 	public StepsMonitor() {
 		currentSteps = 0;
 	}
@@ -37,11 +36,11 @@ public class StepsMonitor extends Thread {
 		
 		try{   			
 			stepsReader = new BufferedReader(new FileReader(path));
-		    String stepsLine;
-			while((stepsLine = stepsReader.readLine()) != null){
-				if(stepsLine.equals("s")) {
-					currentSteps += 1;
-				}
+		    String line;
+		    int steps;
+			while((line = stepsReader.readLine()) != null){
+				steps = Integer.parseInt(line);
+				currentSteps += steps;
 				// get next step data point every 5 seconds
 				Thread.sleep(5000);
 			}

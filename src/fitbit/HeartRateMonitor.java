@@ -3,23 +3,27 @@ package fitbit;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
 
 
 public class HeartRateMonitor extends Thread {
+	private static final String PATH = "pulse_data.txt";
 	private float currentHeartRate;
 	
 	public HeartRateMonitor() {
 		// set the initial heart rate to 0
 		currentHeartRate = 0;
 	}
+	
 	@Override 
 	public void run() {
 		startMonitoringPulse();
 	}
+	
 	public void startMonitoringPulse() {			
 		while(true) {
 			try {
-				readPulseDataFromFile("pulse_data.txt");
+				readPulseDataFromFile();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -31,11 +35,12 @@ public class HeartRateMonitor extends Thread {
 		return currentHeartRate;
 	}
 	
-	public void readPulseDataFromFile(String path) throws InterruptedException{
+	public void readPulseDataFromFile() throws InterruptedException{
     		BufferedReader pulseReader = null;
-    		
     		try{   			
-    			pulseReader = new BufferedReader(new FileReader(path));
+    			pulseReader = new BufferedReader(new FileReader(PATH));
+    			//pulseReader.setLineNumber(line);
+    			//pulse = Float.parseFloat(pulseReader.readLine());
     			String pulse;
     			while((pulse = pulseReader.readLine()) != null){
     					currentHeartRate = Float.parseFloat(pulse);
@@ -56,7 +61,6 @@ public class HeartRateMonitor extends Thread {
 					}
     			}
     		}
-    		        		
     }
 	
 }
