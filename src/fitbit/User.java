@@ -6,7 +6,7 @@ public final class User {
 	private double height;
 	private char sex;
 
-    private User() {}
+    User() {}
 
     public static User getInstance() {
         if (instance == null) {
