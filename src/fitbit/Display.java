@@ -74,6 +74,7 @@ public class Display extends JFrame {
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
 	    private JButton nextPane;
+	    private JButton backPane;
 
 		/**
 		 * 
@@ -83,7 +84,7 @@ public class Display extends JFrame {
 			setOpaque(true);
 			setBackground(Color.BLACK);
 			//construct components
-	        nextPane = new JButton ("Next Pane");
+	        nextPane = new JButton ("Next Screen");
 	        nextPane.addActionListener( new ActionListener()
 	        {
 	            public void actionPerformed(ActionEvent e)
@@ -92,6 +93,16 @@ public class Display extends JFrame {
 	                cardLayout.next(contentPane);
 	            }
 	        });
+	        backPane = new JButton ("Previous Screen");
+	        backPane.addActionListener( new ActionListener()
+	        {
+	            public void actionPerformed(ActionEvent e)
+	            {
+	                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+	                cardLayout.previous(contentPane);
+	            }
+	        });
+	        add(backPane);
 	        add(nextPane);
 		}	
 		
@@ -100,9 +111,10 @@ public class Display extends JFrame {
 	        super.paintComponent(g);
 	        float hrf = ac.getHeartRate();
 			String heartRate = Float.toString(hrf);
+			String heartRateMessage = "BPM: " + heartRate;
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
-	        g.drawString(heartRate, 150, 150);
+	        g.drawString(heartRateMessage, 150, 150);
 	    }
 
 	}
@@ -112,6 +124,7 @@ public class Display extends JFrame {
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
 	    private JButton nextPane;
+	    private JButton backPane;
 
 		/**
 		 * 
@@ -121,7 +134,7 @@ public class Display extends JFrame {
 			setOpaque(true);
 			setBackground(Color.BLACK);
 			//construct components
-	        nextPane = new JButton ("Next Pane");
+	        nextPane = new JButton ("Next Screen");
 	        nextPane.addActionListener( new ActionListener()
 	        {
 	            public void actionPerformed(ActionEvent e)
@@ -130,17 +143,30 @@ public class Display extends JFrame {
 	                cardLayout.next(contentPane);
 	            }
 	        });
+	        backPane = new JButton ("Previous Screen");
+	        backPane.addActionListener( new ActionListener()
+	        {
+	            public void actionPerformed(ActionEvent e)
+	            {
+	                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+	                cardLayout.previous(contentPane);
+	            }
+	        });
+	        add(backPane);
 	        add(nextPane);
+	        nextPane.setLocation(0, 0);
+
 		}	
 		
 		@Override
 	    protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        double calories = ac.getCalories();
-			String steps = Double.toString(calories);
+	        double caloriesDouble = ac.getCalories();
+			String calories = Double.toString(caloriesDouble);
+			String caloriesMessage = "Calories Burned: " + calories;
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
-	        g.drawString(steps, 150, 150);
+	        g.drawString(caloriesMessage, 70, 150);
 	    }
 
 	}
@@ -150,6 +176,7 @@ public class Display extends JFrame {
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
 	    private JButton nextPane;
+	    private JButton backPane;
 
 		/**
 		 * 
@@ -159,7 +186,8 @@ public class Display extends JFrame {
 			setOpaque(true);
 			setBackground(Color.BLACK);
 			//construct components
-	        nextPane = new JButton ("Next Pane");
+	        nextPane = new JButton ("Next Screen");
+	        nextPane.setLocation(200, 100);
 	        nextPane.addActionListener( new ActionListener()
 	        {
 	            public void actionPerformed(ActionEvent e)
@@ -168,7 +196,18 @@ public class Display extends JFrame {
 	                cardLayout.next(contentPane);
 	            }
 	        });
+	        backPane = new JButton ("Previous Screen");
+	        backPane.addActionListener( new ActionListener()
+	        {
+	            public void actionPerformed(ActionEvent e)
+	            {
+	                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+	                cardLayout.previous(contentPane);
+	            }
+	        });
+	        add(backPane);
 	        add(nextPane);
+
 		}	
 		@Override
 	    protected void paintComponent(Graphics g) {
@@ -191,6 +230,7 @@ public class Display extends JFrame {
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
 	    private JButton nextPane;
+	    private JButton backPane;
 
 
 		public StepsPane(JPanel panel) {
@@ -198,7 +238,7 @@ public class Display extends JFrame {
 	        setOpaque(true);
 	        setBackground(Color.BLACK);
 	       
-	        nextPane = new JButton ("Next Pane");
+	        nextPane = new JButton ("Next Screen");
 	        nextPane.addActionListener( new ActionListener()
 	        {
 	            public void actionPerformed(ActionEvent e)
@@ -207,6 +247,18 @@ public class Display extends JFrame {
 	                cardLayout.next(contentPane);
 	            }
 	        });
+	        
+	        
+	        backPane = new JButton ("Previous Screen");
+	        backPane.addActionListener( new ActionListener()
+	        {
+	            public void actionPerformed(ActionEvent e)
+	            {
+	                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+	                cardLayout.previous(contentPane);
+	            }
+	        });
+	        add(backPane);
 	        add(nextPane);
 		}	
 		
@@ -215,9 +267,10 @@ public class Display extends JFrame {
 			super.paintComponent(g);
 			int stepsInt = ac.getSteps();
 			String steps = Integer.toString(stepsInt);
+			String stepsMessage = "Steps Taken: " + steps;
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
-	        g.drawString(steps, 150, 150);
+	        g.drawString(stepsMessage, 100, 150);
 			
 		}
 		
