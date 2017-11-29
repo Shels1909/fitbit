@@ -81,7 +81,7 @@ public class Display extends JFrame {
 		public HeartRatePane(JPanel panel) {
 			contentPane = panel;
 			setOpaque(true);
-			setBackground(Color.WHITE);
+			setBackground(Color.BLACK);
 			//construct components
 	        nextPane = new JButton ("Next Pane");
 	        nextPane.addActionListener( new ActionListener()
@@ -100,7 +100,8 @@ public class Display extends JFrame {
 	        super.paintComponent(g);
 	        float hrf = ac.getHeartRate();
 			String heartRate = Float.toString(hrf);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
 	        g.drawString(heartRate, 150, 150);
 	    }
 
@@ -118,7 +119,7 @@ public class Display extends JFrame {
 		public CaloriesPane(JPanel panel) {
 			contentPane = panel;
 			setOpaque(true);
-			setBackground(Color.WHITE);
+			setBackground(Color.BLACK);
 			//construct components
 	        nextPane = new JButton ("Next Pane");
 	        nextPane.addActionListener( new ActionListener()
@@ -137,7 +138,8 @@ public class Display extends JFrame {
 	        super.paintComponent(g);
 	        double calories = ac.getCalories();
 			String steps = Double.toString(calories);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
 	        g.drawString(steps, 150, 150);
 	    }
 
@@ -155,7 +157,7 @@ public class Display extends JFrame {
 		public ClockPane(JPanel panel) {
 			contentPane = panel;
 			setOpaque(true);
-			setBackground(Color.WHITE);
+			setBackground(Color.BLACK);
 			//construct components
 	        nextPane = new JButton ("Next Pane");
 	        nextPane.addActionListener( new ActionListener()
@@ -174,7 +176,8 @@ public class Display extends JFrame {
 	        Date d = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
 			String time = sdf.format(d);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
 	        g.drawString(time, 150, 150);
 	    }
 
@@ -193,7 +196,7 @@ public class Display extends JFrame {
 		public StepsPane(JPanel panel) {
 			contentPane = panel;
 	        setOpaque(true);
-	        setBackground(Color.WHITE);
+	        setBackground(Color.BLACK);
 	       
 	        nextPane = new JButton ("Next Pane");
 	        nextPane.addActionListener( new ActionListener()
@@ -212,7 +215,8 @@ public class Display extends JFrame {
 			super.paintComponent(g);
 			int stepsInt = ac.getSteps();
 			String steps = Integer.toString(stepsInt);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
 	        g.drawString(steps, 150, 150);
 			
 		}
@@ -254,15 +258,4 @@ public class Display extends JFrame {
 		  
 	}
 
-	/*private class SwingAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-		
-		public SwingAction() {
-			putValue(NAME, "SwingAction");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-			setContentPane(stepsPane);
-		}
-	}*/
 }
