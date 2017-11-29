@@ -3,7 +3,6 @@ package fitbit;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberReader;
 
 
 public class HeartRateMonitor extends Thread {
@@ -39,8 +38,6 @@ public class HeartRateMonitor extends Thread {
     		BufferedReader pulseReader = null;
     		try{   			
     			pulseReader = new BufferedReader(new FileReader(PATH));
-    			//pulseReader.setLineNumber(line);
-    			//pulse = Float.parseFloat(pulseReader.readLine());
     			String pulse;
     			while((pulse = pulseReader.readLine()) != null){
     					currentHeartRate = Float.parseFloat(pulse);
