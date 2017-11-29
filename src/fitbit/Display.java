@@ -1,12 +1,25 @@
 package fitbit;
 
-import java.awt.Container;
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Graphics;
 
-import javax.swing.*; // Import of the JavaSwing library 
-import javax.swing.JFrame; // Import JFrame library 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class Display extends JPanel{
+import javax.swing.Timer;
+import javax.swing.JButton;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+public class Display extends JFrame {
 	
 	/**
 	 * This class is responsible for creating the Display of the
@@ -29,46 +42,84 @@ public class Display extends JPanel{
 	 * 
 	 * Each screen (1-4) should have left and right arrows that will allow the user
 	 * 		to cycle between them.
+
+	/**
+	 * 
 	 */
-	
 	private static final long serialVersionUID = 1L;
+	private final Action action = new SwingAction();
 
-	
-	JFrame frame; // Instantiate a new window frame 
-	
-    public Display(JFrame frame) {
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Display frame = new Display();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	class ClockPanel extends JPanel {
 
-        this.frame = frame; // Create the frame 
-        
-    }
-    
-    private static void createAndShowGUI() {
-        //Make sure we have nice window decorations.
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        JDialog.setDefaultLookAndFeelDecorated(true);
-       
-        //Create and set up the window.
-        JFrame frame = new JFrame("Fitbit");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
-        //Set up the content pane.
-        Container contentPane = frame.getContentPane();
-        contentPane.setLayout(new GridLayout(1,1));
-        contentPane.add(new Display(frame));
+		/**
+		 * 
+		 */
+		
+		@Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Date d = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
+			String time = sdf.format(d);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+	        g.drawString(time, 150, 150);
+	    }
 
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
+	}
 
-    public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
+	/**
+	 * Create the frame.
+	 */
+	public Display() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		ClockPanel contentPane = new ClockPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		
+		JButton btnButton = new JButton("button");
+		btnButton.setAction(action);
+		getContentPane().add(btnButton, BorderLayout.SOUTH);
+		
+		int delay = 1000; //milliseconds
+		ActionListener taskPerformer = new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				contentPane.repaint();
+		      }
+		  };
+		  new Timer(delay, taskPerformer).start();
+		  
+	}
 
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "SwingAction");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
 }
