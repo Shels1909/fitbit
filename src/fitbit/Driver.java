@@ -11,24 +11,14 @@ public class Driver extends Thread{
 		ActivityController ac = new ActivityController();	
 		ac.startMonitors();
 		while(true) {
+			System.out.print("Cal:");
 			System.out.println(ac.getCalories());
+			System.out.print("HR: ");
+			System.out.println(ac.getHeartRate());
+			System.out.print("Steps: ");
+			System.out.println(ac.getSteps());
 		}
-		
-		/*System.out.println(ac.getCalories());
-		 update the calories burned every 5 seconds and output the total calories burned so far
-		while(true) {
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			ac.updateCalories();
-			System.out.println(ac.getCalories());
-		}
-		*/
 	}
-	
 	
 	public static void createUser(double weight, double height, char sex) {
 		User user = User.getInstance();
