@@ -47,6 +47,9 @@ public class CaloriesMonitor extends Thread{
 	}
 	
 	public double getCalories() {
+		calories = calories * 100;
+		calories = Math.round(calories);
+		calories = calories / 100;
 		return calories;
 	}
 }

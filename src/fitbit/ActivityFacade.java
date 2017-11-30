@@ -1,12 +1,12 @@
 package fitbit;
 
-public class ActivityController {
+public class ActivityFacade {
 	
 	private StepsMonitor sm;
 	private HeartRateMonitor hrm;
 	private CaloriesMonitor cm;
 	
-	public ActivityController() {
+	public ActivityFacade() {
 		User user = User.getInstance();
 		user.setHeight(1.2);
 		user.setWeight(73.4);
