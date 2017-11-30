@@ -1,4 +1,4 @@
-package fitbit;
+package com.csci360.healthmonitor;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -1,4 +1,4 @@
-package fitbit;
+package com.csci360.healthmonitor;
 
 public class ActivityFacade {
 	

@@ -1,4 +1,4 @@
-package fitbit;
+package com.csci360.healthmonitor;
 
 import java.awt.CardLayout;
 import java.awt.EventQueue;
@@ -418,9 +418,12 @@ public class Display extends JFrame {
 	 * Create the frame.
 	 */
 	public Display() {
+		// kick off all the monitor threads
 		ac.startMonitors();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		
 		// create main panel
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -428,6 +431,7 @@ public class Display extends JFrame {
 		contentPane.setLayout(new CardLayout());
 		setContentPane(contentPane);
 		
+		// create and add all the views to the Card Layout
 		clockPane = new ClockPane(contentPane);
 		stepsPane = new StepsPane(contentPane);
 		caloriesPane = new CaloriesPane(contentPane);
@@ -445,6 +449,7 @@ public class Display extends JFrame {
 		int delay = 1000; //milliseconds
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
+				// update the global clock
 				Date d = new Date();
 				SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
 				time = sdf.format(d);				
@@ -452,6 +457,7 @@ public class Display extends JFrame {
 					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 	    				cardLayout.show(contentPane, "AlarmResult Pane");
 				}			
+				// repaint all the displays except the alarmSet pane
 				stepsPane.repaint();
 				clockPane.repaint();
 				caloriesPane.repaint();

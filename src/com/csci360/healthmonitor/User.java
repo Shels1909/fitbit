@@ -1,4 +1,4 @@
-package fitbit;
+package com.csci360.healthmonitor;
 
 public final class User {
 	private static volatile User instance = null;
