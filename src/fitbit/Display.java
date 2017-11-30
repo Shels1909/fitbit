@@ -1,20 +1,18 @@
 package fitbit;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.Timer;
@@ -49,6 +47,7 @@ public class Display extends JFrame {
 	private CaloriesPane caloriesPane;
 	private HeartRatePane heartRatePane;
 	private AlarmPane alarmPane;
+	private String time;
 	private String alarmTime = "";
 	public ActivityFacade ac  = new ActivityFacade();
 	private AlarmResultPane alarmResultPane;
@@ -145,10 +144,10 @@ public class Display extends JFrame {
 	        super.paintComponent(g);
 	        float hrf = ac.getHeartRate();
 			String heartRate = Float.toString(hrf);
-			String heartRateMessage = "BPM: " + heartRate;
+			String heartRateMessage = "HeartRate: " + heartRate + " BPM";
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
-	        g.drawString(heartRateMessage, 150, 150);
+	        g.drawString(heartRateMessage, 100, 150);
 	    }
 
 	}
@@ -212,17 +211,18 @@ public class Display extends JFrame {
 		 */
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
+		private JButton hour;
+		private JButton minute;
 		private JButton clock;
 		private JButton setAlarm;
-		private JTextField timeInput;
-		private JLabel timeLabel;
+		private String time;
+		private Date d = new Date();
+		private Calendar c;
 		
 		public AlarmPane(JPanel panel) {
-			this.setLayout(new BorderLayout());
 			contentPane = panel;
 			setOpaque(true);
 			setBackground(Color.BLACK);
-			// create panel for back to clock button
 			JPanel buttonPanel = new JPanel();
 			buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 			buttonPanel.setBackground(Color.BLACK);
@@ -230,18 +230,39 @@ public class Display extends JFrame {
 			JPanel textPanel = new JPanel();
 			textPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 			textPanel.setBackground(Color.BLACK);
-			timeLabel = new JLabel("Enter Time");
-			timeLabel.setForeground(Color.WHITE);
-			timeInput = new JTextField(20);
 			
 			setAlarm = new JButton("Set");
 			setAlarm.addActionListener(new ActionListener() {
 				
 				public void actionPerformed(ActionEvent e)
 				{
-					alarmTime = timeInput.getText();
+					SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
+					alarmTime = sdf.format(c.getTime());
 					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 					cardLayout.show(contentPane, "Clock Pane");
+				}
+			});
+			hour = new JButton("Hour");
+			hour.addActionListener(new ActionListener() {
+				
+				
+				public void actionPerformed(ActionEvent e)
+				{
+			        c.add(Calendar.HOUR, 1);
+			        d = c.getTime();
+			        repaint();
+		
+				}
+			});
+			
+			minute = new JButton("Minute");
+			minute.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e)
+				{
+					c.add(Calendar.MINUTE, 1);
+			        d = c.getTime();
+			        repaint();
 				}
 			});
 			
@@ -254,16 +275,24 @@ public class Display extends JFrame {
 					cardLayout.show(contentPane, "Clock Pane");
 				}
 			});
-			textPanel.add(timeLabel);
-			textPanel.add(timeInput);
-			textPanel.add(setAlarm);
-			add(textPanel, BorderLayout.SOUTH);
-			buttonPanel.add(clock);
-			add(buttonPanel, BorderLayout.NORTH);
+			add(minute);
+			add(setAlarm);
+			add(hour);
 			
 		}
 		
-		
+		@Override
+	    protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			c = Calendar.getInstance();
+			c.setTime(d);
+			c.set(Calendar.SECOND, 0);
+			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
+			time = sdf.format(c.getTime());
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
+			g.drawString(time, 150, 150);
+		}
 		
 	}
 	
@@ -321,19 +350,9 @@ public class Display extends JFrame {
 		@Override
 	    protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        Date d = new Date();
-			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
-			String time = sdf.format(d);
 			g.setColor(Color.WHITE);
-			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
-			
-			if(time.equals(alarmTime)) {
-				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-    				cardLayout.show(contentPane, "AlarmResult Pane");
-			}
-			else {
-				g.drawString(time, 150, 150);
-			}
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));	
+			g.drawString(time, 150, 150);
 	    }
 
 	}
@@ -426,7 +445,18 @@ public class Display extends JFrame {
 		int delay = 1000; //milliseconds
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				contentPane.repaint();
+				Date d = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
+				time = sdf.format(d);				
+				if(time.equals(alarmTime)) {
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+	    				cardLayout.show(contentPane, "AlarmResult Pane");
+				}			
+				stepsPane.repaint();
+				clockPane.repaint();
+				caloriesPane.repaint();
+				heartRatePane.repaint();	
+
 		      }
 		  };
 		  new Timer(delay, taskPerformer).start();	  
