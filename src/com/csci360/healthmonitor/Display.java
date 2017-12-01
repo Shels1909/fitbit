@@ -30,14 +30,14 @@ public class Display extends JFrame {
 	 * 			for the given day.
 	 * 		-Screen 3: Calories burned. Should display the current total calories
 	 * 			burned by the user for the given day.
-	 * 		-Screen 4: Sleep data. Should display the last known information
-	 * 			on the time the user spent asleep. 
+	 * 		-Screen 4: Heart Rate. Should display the current heart rate
+	 *                      of the user.
 	 * 
 	 * Each screen (1-4) should have left and right arrows that will allow the user
 	 * 		to cycle between them.
 
 	/**
-	 * 
+	 *  Below are all of the variable initializations needed for creating the UI
 	 */
 	private static final long serialVersionUID = 1L;
 	//private final Action action = new SwingAction();
@@ -70,7 +70,7 @@ public class Display extends JFrame {
 	class AlarmResultPane extends JPanel{
 
 		/**
-		 * 
+		 * Creates a pane to use when utilizing the alarm feature of the system 
 		 */
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
@@ -104,13 +104,13 @@ public class Display extends JFrame {
 	}
 	class HeartRatePane extends JPanel {
 
-		private static final long serialVersionUID = 1L;
-		private JPanel contentPane;
+	    private static final long serialVersionUID = 1L;
+	    private JPanel contentPane;
 	    private JButton nextPane;
 	    private JButton backPane;
 
 		/**
-		 * 
+		 * Creates a pane for displaying the heart rate 
 		 */
 		public HeartRatePane(JPanel panel) {
 			contentPane = panel;
@@ -160,7 +160,7 @@ public class Display extends JFrame {
 	    private JButton backPane;
 
 		/**
-		 * 
+		 * Creates a pane used for viewing the number of daily calories burned
 		 */
 		public CaloriesPane(JPanel panel) {
 			contentPane = panel;
@@ -207,7 +207,7 @@ public class Display extends JFrame {
 	class AlarmPane extends JPanel{
 
 		/**
-		 * 
+		 * Creates a pane used when utilizing the alarm feature of the system 
 		 */
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
@@ -305,7 +305,7 @@ public class Display extends JFrame {
 	    private JButton alarm;
 
 		/**
-		 * 
+		 * Creates a pane for viewing the current time 
 		 */
 		public ClockPane(JPanel panel) {
 			contentPane = panel;
@@ -360,7 +360,7 @@ public class Display extends JFrame {
 	class StepsPane extends JPanel{
 		
 		/**
-		 * 
+		 * Creates a pane for viewing the total number of daily steps taken 
 		 */
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
