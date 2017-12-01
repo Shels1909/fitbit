@@ -17,7 +17,7 @@ public class UserTest {
 		user.setWeight(111);
 		assertEquals(111, user.getWeight(), 0);
 	}
-	
+
 	@Test
 	public void testSetHeight() {
 		user.setHeight(165);
