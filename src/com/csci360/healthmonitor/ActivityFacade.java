@@ -7,10 +7,6 @@ public class ActivityFacade {
 	private CaloriesMonitor cm;
 	
 	public ActivityFacade() {
-		User user = User.getInstance();
-		user.setHeight(1.2);
-		user.setWeight(73.4);
-		user.setSex('M');
 		sm = new StepsMonitor();
 		hrm = new HeartRateMonitor();
 		cm = new CaloriesMonitor(hrm, sm);

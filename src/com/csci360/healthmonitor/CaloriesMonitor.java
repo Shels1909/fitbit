@@ -27,7 +27,7 @@ public class CaloriesMonitor extends Thread{
 			}
 		}		
 	}
-	
+	// calculate the Calories based on how strenuous the activity is (heartrate & steps)
 	public void calculateCalories() throws InterruptedException {
 		float steps = sm.getCurrentSteps();
 		float heartrate = hrm.getCurrentHeartRate();
