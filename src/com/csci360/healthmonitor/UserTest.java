@@ -1,4 +1,4 @@
-package fitbit;
+package com.csci360.healthmonitor;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -9,7 +9,7 @@ public class UserTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		user = new User();
+		user = User.getInstance();
 	}
 
 	@Test
@@ -17,7 +17,7 @@ public class UserTest {
 		user.setWeight(111);
 		assertEquals(111, user.getWeight(), 0);
 	}
-	
+
 	@Test
 	public void testSetHeight() {
 		user.setHeight(165);

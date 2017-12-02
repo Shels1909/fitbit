@@ -1,10 +1,10 @@
-package fitbit;
+package com.csci360.healthmonitor;
 
 import java.awt.CardLayout;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.Timer;
@@ -23,26 +24,20 @@ public class Display extends JFrame {
 	 * This class is responsible for creating the Display of the
 	 * 		fitbit using JavaSwing. This display should include the
 	 * 		following:
-	 * 		-A 'Welcome' screen for the user to see upon initial startup
-	 * 	 	-A setup screen for the user to set up their device; within
-	 * 			this setup there should be 6 different screens:
-	 * 			-The user will enter their sex
-	 *  		-The user will enter their age
-	 *   		-The user will enter their weight
-	 *    		-The user will enter their height
+	 * 		
 	 * 		-Screen 1: Clock display. Should display the current time and date.
 	 * 		-Screen 2: Steps counted. Should display the current steps counted
 	 * 			for the given day.
 	 * 		-Screen 3: Calories burned. Should display the current total calories
 	 * 			burned by the user for the given day.
-	 * 		-Screen 4: Sleep data. Should display the last known information
-	 * 			on the time the user spent asleep. 
+	 * 		-Screen 4: Heart Rate. Should display the current heart rate
+	 *                      of the user.
 	 * 
 	 * Each screen (1-4) should have left and right arrows that will allow the user
 	 * 		to cycle between them.
 
 	/**
-	 * 
+	 *  Below are all of the variable initializations needed for creating the UI
 	 */
 	private static final long serialVersionUID = 1L;
 	//private final Action action = new SwingAction();
@@ -51,7 +46,11 @@ public class Display extends JFrame {
 	private StepsPane stepsPane;
 	private CaloriesPane caloriesPane;
 	private HeartRatePane heartRatePane;
-	public ActivityController ac  = new ActivityController();
+	private AlarmPane alarmPane;
+	private String time;
+	private String alarmTime = "";
+	public ActivityFacade ac  = new ActivityFacade();
+	private AlarmResultPane alarmResultPane;
 
 	/**
 	 * Launch the application.
@@ -68,16 +67,50 @@ public class Display extends JFrame {
 			}
 		});
 	}
-	
-	class HeartRatePane extends JPanel {
+	class AlarmResultPane extends JPanel{
 
+		/**
+		 * Creates a pane to use when utilizing the alarm feature of the system 
+		 */
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
+		private JButton clock;
+		
+		public AlarmResultPane(JPanel panel) {
+			contentPane = panel;
+			setOpaque(true);
+			setBackground(Color.BLACK);
+			
+			clock = new JButton("Clock");
+			clock.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e)
+				{
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+	                cardLayout.show(contentPane, "Clock Pane");
+				}
+			});
+			
+			add(clock);
+		}
+		
+		@Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
+	        g.drawString("ALARM!!", 150, 150);
+	    }
+		
+	}
+	class HeartRatePane extends JPanel {
+
+	    private static final long serialVersionUID = 1L;
+	    private JPanel contentPane;
 	    private JButton nextPane;
 	    private JButton backPane;
 
 		/**
-		 * 
+		 * Creates a pane for displaying the heart rate 
 		 */
 		public HeartRatePane(JPanel panel) {
 			contentPane = panel;
@@ -90,7 +123,7 @@ public class Display extends JFrame {
 	            public void actionPerformed(ActionEvent e)
 	            {
 	                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-	                cardLayout.next(contentPane);
+	                cardLayout.first(contentPane);
 	            }
 	        });
 	        backPane = new JButton ("Previous Screen");
@@ -111,10 +144,10 @@ public class Display extends JFrame {
 	        super.paintComponent(g);
 	        float hrf = ac.getHeartRate();
 			String heartRate = Float.toString(hrf);
-			String heartRateMessage = "BPM: " + heartRate;
+			String heartRateMessage = "HeartRate: " + heartRate + " BPM";
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
-	        g.drawString(heartRateMessage, 150, 150);
+	        g.drawString(heartRateMessage, 100, 150);
 	    }
 
 	}
@@ -127,7 +160,7 @@ public class Display extends JFrame {
 	    private JButton backPane;
 
 		/**
-		 * 
+		 * Creates a pane used for viewing the number of daily calories burned
 		 */
 		public CaloriesPane(JPanel panel) {
 			contentPane = panel;
@@ -171,15 +204,108 @@ public class Display extends JFrame {
 
 	}
 	
+	class AlarmPane extends JPanel{
+
+		/**
+		 * Creates a pane used when utilizing the alarm feature of the system 
+		 */
+		private static final long serialVersionUID = 1L;
+		private JPanel contentPane;
+		private JButton hour;
+		private JButton minute;
+		private JButton clock;
+		private JButton setAlarm;
+		private String time;
+		private Date d = new Date();
+		private Calendar c;
+		
+		public AlarmPane(JPanel panel) {
+			contentPane = panel;
+			setOpaque(true);
+			setBackground(Color.BLACK);
+			JPanel buttonPanel = new JPanel();
+			buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+			buttonPanel.setBackground(Color.BLACK);
+			
+			JPanel textPanel = new JPanel();
+			textPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+			textPanel.setBackground(Color.BLACK);
+			
+			setAlarm = new JButton("Set");
+			setAlarm.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e)
+				{
+					SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
+					alarmTime = sdf.format(c.getTime());
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "Clock Pane");
+				}
+			});
+			hour = new JButton("Hour");
+			hour.addActionListener(new ActionListener() {
+				
+				
+				public void actionPerformed(ActionEvent e)
+				{
+			        c.add(Calendar.HOUR, 1);
+			        d = c.getTime();
+			        repaint();
+		
+				}
+			});
+			
+			minute = new JButton("Minute");
+			minute.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e)
+				{
+					c.add(Calendar.MINUTE, 1);
+			        d = c.getTime();
+			        repaint();
+				}
+			});
+			
+			clock = new JButton("Back to Clock");
+			clock.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e)
+				{
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "Clock Pane");
+				}
+			});
+			add(minute);
+			add(setAlarm);
+			add(hour);
+			
+		}
+		
+		@Override
+	    protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			c = Calendar.getInstance();
+			c.setTime(d);
+			c.set(Calendar.SECOND, 0);
+			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
+			time = sdf.format(c.getTime());
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
+			g.drawString(time, 150, 150);
+		}
+		
+	}
+	
 	class ClockPane extends JPanel {
 
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
 	    private JButton nextPane;
 	    private JButton backPane;
+	    private JButton alarm;
 
 		/**
-		 * 
+		 * Creates a pane for viewing the current time 
 		 */
 		public ClockPane(JPanel panel) {
 			contentPane = panel;
@@ -187,7 +313,6 @@ public class Display extends JFrame {
 			setBackground(Color.BLACK);
 			//construct components
 	        nextPane = new JButton ("Next Screen");
-	        nextPane.setLocation(200, 100);
 	        nextPane.addActionListener( new ActionListener()
 	        {
 	            public void actionPerformed(ActionEvent e)
@@ -202,22 +327,32 @@ public class Display extends JFrame {
 	            public void actionPerformed(ActionEvent e)
 	            {
 	                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-	                cardLayout.previous(contentPane);
+	                cardLayout.show(contentPane, "HeartRate Pane");
+	                
 	            }
 	        });
+	        alarm = new JButton("Alarm");
+	        alarm.addActionListener(new ActionListener()
+	        	{
+	        		public void actionPerformed(ActionEvent e)
+	        		{
+	        			CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+	        			cardLayout.show(contentPane, "Alarm Pane");
+	        		}
+	        	});
+	        
 	        add(backPane);
+	        add(alarm);
 	        add(nextPane);
 
 		}	
+		 
 		@Override
 	    protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        Date d = new Date();
-			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
-			String time = sdf.format(d);
 			g.setColor(Color.WHITE);
-			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
-	        g.drawString(time, 150, 150);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));	
+			g.drawString(time, 150, 150);
 	    }
 
 	}
@@ -225,7 +360,7 @@ public class Display extends JFrame {
 	class StepsPane extends JPanel{
 		
 		/**
-		 * 
+		 * Creates a pane for viewing the total number of daily steps taken 
 		 */
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
@@ -238,6 +373,7 @@ public class Display extends JFrame {
 	        setOpaque(true);
 	        setBackground(Color.BLACK);
 	       
+	        
 	        nextPane = new JButton ("Next Screen");
 	        nextPane.addActionListener( new ActionListener()
 	        {
@@ -260,6 +396,8 @@ public class Display extends JFrame {
 	        });
 	        add(backPane);
 	        add(nextPane);
+	     
+	      
 		}	
 		
 		@Override
@@ -280,7 +418,9 @@ public class Display extends JFrame {
 	 * Create the frame.
 	 */
 	public Display() {
+		// kick off all the monitor threads
 		ac.startMonitors();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
@@ -291,23 +431,41 @@ public class Display extends JFrame {
 		contentPane.setLayout(new CardLayout());
 		setContentPane(contentPane);
 		
+		// create and add all the views to the Card Layout
 		clockPane = new ClockPane(contentPane);
 		stepsPane = new StepsPane(contentPane);
 		caloriesPane = new CaloriesPane(contentPane);
 		heartRatePane = new HeartRatePane(contentPane);
+		alarmPane = new AlarmPane(contentPane);
+		alarmResultPane = new AlarmResultPane(contentPane);
         contentPane.add(clockPane, "Clock Pane"); 
         contentPane.add(stepsPane, "Steps Pane");
         contentPane.add(caloriesPane, "Calories Pane");
         contentPane.add(heartRatePane, "HeartRate Pane");
+        contentPane.add(alarmResultPane, "AlarmResult Pane");
+        contentPane.add(alarmPane, "Alarm Pane");
         
+        // Update the contents every second
 		int delay = 1000; //milliseconds
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				contentPane.repaint();
+				// update the global clock
+				Date d = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
+				time = sdf.format(d);				
+				if(time.equals(alarmTime)) {
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+	    				cardLayout.show(contentPane, "AlarmResult Pane");
+				}			
+				// repaint all the displays except the alarmSet pane
+				stepsPane.repaint();
+				clockPane.repaint();
+				caloriesPane.repaint();
+				heartRatePane.repaint();	
+
 		      }
 		  };
-		  new Timer(delay, taskPerformer).start();
-		  
+		  new Timer(delay, taskPerformer).start();	  
 		  
 	}
 
