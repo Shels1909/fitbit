@@ -1,5 +1,5 @@
 # FITBIT
-Mock FitBit Device
+Mock FitBit Device/n
 The hardware data is pulled from the text files.
 Data is updated on the screens every 5 seconds.
 After compiling and running a display screen will open.
