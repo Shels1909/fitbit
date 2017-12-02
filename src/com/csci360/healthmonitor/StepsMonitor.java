@@ -8,22 +8,22 @@ public class StepsMonitor extends Thread {
 	
 	private int currentSteps;
 	public StepsMonitor() {
-		currentSteps = 0;
+		currentSteps = 0; //init steps to 0 to start with 
 	}
 	
 	public int getCurrentSteps() {
-		return currentSteps;
+		return currentSteps; // return current steps 
 	}
 	
 	public void run() {
-		startMonitoringSteps();
+		startMonitoringSteps(); // begin monitoring steps 
 	}
 
 	private void startMonitoringSteps() {
 		// TODO Auto-generated method stub
 		while(true) {
 			try {
-				readStepsDataFromFile("steps_data.txt");
+				readStepsDataFromFile("steps_data.txt"); //reads step information from a file
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 
+/*
+ * Test cases written using JUnit to test the steps monitor class
+ */
 public class StepsMonitorTest {
 	private StepsMonitor sm;
 	
