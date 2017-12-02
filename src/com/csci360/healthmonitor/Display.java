@@ -11,6 +11,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,21 +37,28 @@ public class Display extends JFrame {
 	 * 
 	 * Each screen (1-4) should have left and right arrows that will allow the user
 	 * 		to cycle between them.
-
 	/**
 	 *  Below are all of the variable initializations needed for creating the UI
 	 */
+	
 	private static final long serialVersionUID = 1L;
-	//private final Action action = new SwingAction();
 	private JPanel contentPane;
 	private ClockPane clockPane;
 	private StepsPane stepsPane;
 	private CaloriesPane caloriesPane;
 	private HeartRatePane heartRatePane;
 	private AlarmPane alarmPane;
+	private HeightPane heightPane;
+	private WeightPane weightPane;
+	private SexPane sexPane;
+	private UserPane userPane;
 	private String time;
 	private String alarmTime = "";
-	public ActivityFacade ac  = new ActivityFacade();
+	private char sex = 'M';
+	private float height;
+	private double weight;
+	
+	public ActivityFacade ac;
 	private AlarmResultPane alarmResultPane;
 
 	/**
@@ -67,6 +76,229 @@ public class Display extends JFrame {
 			}
 		});
 	}
+	
+	class HeightPane extends JPanel{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private JPanel contentPane;
+		private JButton nextButton;
+		private JButton heightUpButton;
+		private JButton heightDownButton;
+		DecimalFormat df = new DecimalFormat("##.#");
+		
+		public HeightPane(JPanel panel) {
+			contentPane = panel;
+			setOpaque(true);
+			setBackground(Color.BLACK);
+			df.setRoundingMode(RoundingMode.DOWN);
+			nextButton = new JButton("next");
+			nextButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "Weight Pane");
+				}
+			});
+			heightUpButton = new JButton("Up");
+			heightUpButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					height+=0.1;
+					repaint();
+				}
+			});
+			heightDownButton = new JButton("Down");
+			heightDownButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					height-=0.1;
+					repaint();
+				}
+			});
+			
+			add(heightUpButton);
+			add(heightDownButton);
+			add(nextButton);
+			
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
+			String heightString = "Height: " + df.format(height) + " Meters";
+			g.drawString("Set your height", 120, 60);
+			g.drawString(heightString, 100, 150);
+			
+		}
+		
+	}
+	class WeightPane extends JPanel{
+
+		/**
+		 * Creates a pane to use when utilizing the alarm feature of the system 
+		 */
+		private static final long serialVersionUID = 1L;
+		private JPanel contentPane;
+		private JButton nextButton;
+		private JButton weightUpButton;
+		private JButton weightDownButton;
+		
+		public WeightPane(JPanel panel) {
+			contentPane = panel;
+			setOpaque(true);
+			setBackground(Color.BLACK);
+			nextButton = new JButton("next");
+			nextButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "Sex Pane");
+				}
+			});
+			weightUpButton = new JButton("Up");
+			weightUpButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					weight++;
+					repaint();
+				}
+			});
+			weightDownButton = new JButton("Down");
+			weightDownButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					weight--;
+					repaint();
+				}
+			});
+			
+			add(weightUpButton);
+			add(weightDownButton);
+			add(nextButton);
+			
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
+			g.drawString("Set your weight", 120, 60);
+			String weightString = "Weight: " + Double.toString(weight) + " kg";
+			g.drawString(weightString, 100, 150);
+			
+		}
+		
+	}
+	
+	class SexPane extends JPanel{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private JPanel contentPane;
+		private JButton nextButton;
+		private JButton changeButton;
+		
+		public SexPane(JPanel panel) {
+			contentPane = panel;
+			setOpaque(true);
+			setBackground(Color.BLACK);
+			changeButton = new JButton("Change Sex");
+			changeButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(sex == 'M') {
+						sex = 'F';
+					}
+					else {
+						sex = 'M';
+					}
+					repaint();
+				}
+			});
+			nextButton = new JButton("next");
+			nextButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "User Pane");
+				}
+			});
+			add(changeButton);
+			add(nextButton);
+		}
+		
+		@Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
+			String sexString = "Sex: " + sex;
+			g.drawString("Set your sex", 120, 60);
+	        g.drawString(sexString, 150, 150);
+	    }
+		
+		
+		
+	}
+	class UserPane extends JPanel{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private JPanel contentPane;
+		private JButton confirmButton;
+		private JButton redoButton;
+		private DecimalFormat df;
+		public UserPane(JPanel panel) {
+			contentPane = panel;
+			setOpaque(true);
+			setBackground(Color.BLACK);
+			df = new DecimalFormat("##.#");
+			df.setRoundingMode(RoundingMode.DOWN);
+			confirmButton = new JButton("Confirm");
+			confirmButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e)
+				{
+					// create the global user object
+					UserCreator uc = new UserCreator(height, weight, sex);
+					uc.createUser();
+					// create the activity facade and start the external monitors
+					ac = new ActivityFacade();
+					ac.startMonitors();
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+	                cardLayout.show(contentPane, "Clock Pane");
+				}
+			});
+			redoButton = new JButton("Redo");
+			redoButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e)
+				{
+					// create the global user object
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+	                cardLayout.show(contentPane, "Height Pane");
+				}
+			});
+			add(redoButton);
+			add(confirmButton);
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Apple LiGothic", Font.PLAIN, 26));
+			String heightString = "Height: " + df.format(height) + " meters";
+			String weightString = "Weight: " + Double.toString(weight) + " kg";
+			String sexString = "Sex: " + sex;
+	        g.drawString(heightString, 150, 60);
+	        g.drawString(weightString, 150, 150);
+	        g.drawString(sexString, 150, 250);
+
+		}
+		
+		
+	}
 	class AlarmResultPane extends JPanel{
 
 		/**
@@ -80,6 +312,7 @@ public class Display extends JFrame {
 			contentPane = panel;
 			setOpaque(true);
 			setBackground(Color.BLACK);
+			
 			
 			clock = new JButton("Clock");
 			clock.addActionListener(new ActionListener() {
@@ -103,9 +336,11 @@ public class Display extends JFrame {
 		
 	}
 	class HeartRatePane extends JPanel {
-
-	    private static final long serialVersionUID = 1L;
-	    private JPanel contentPane;
+		/**
+		 * Creates a pane for displaying the heart rate 
+		 */
+		private static final long serialVersionUID = 1L;
+		private JPanel contentPane;
 	    private JButton nextPane;
 	    private JButton backPane;
 
@@ -123,7 +358,7 @@ public class Display extends JFrame {
 	            public void actionPerformed(ActionEvent e)
 	            {
 	                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-	                cardLayout.first(contentPane);
+	                cardLayout.show(contentPane, "Clock Pane");
 	            }
 	        });
 	        backPane = new JButton ("Previous Screen");
@@ -154,10 +389,14 @@ public class Display extends JFrame {
 	
 	class CaloriesPane extends JPanel {
 
+		/**
+		 * Creates a pane used for viewing the number of daily calories burned
+		 */
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
 	    private JButton nextPane;
 	    private JButton backPane;
+
 
 		/**
 		 * Creates a pane used for viewing the number of daily calories burned
@@ -304,7 +543,10 @@ public class Display extends JFrame {
 	    private JButton backPane;
 	    private JButton alarm;
 
+	    /**
+=======
 		/**
+>>>>>>> b74f47bcca82f32d629cff15c553eb83a999e001
 		 * Creates a pane for viewing the current time 
 		 */
 		public ClockPane(JPanel panel) {
@@ -415,11 +657,9 @@ public class Display extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the main display
 	 */
 	public Display() {
-		// kick off all the monitor threads
-		ac.startMonitors();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -431,7 +671,16 @@ public class Display extends JFrame {
 		contentPane.setLayout(new CardLayout());
 		setContentPane(contentPane);
 		
-		// create and add all the views to the Card Layout
+		// create and add all the views for the fitbit device		
+		heightPane = new HeightPane(contentPane);
+		weightPane = new WeightPane(contentPane);
+		sexPane = new SexPane(contentPane);
+		userPane = new  UserPane(contentPane);
+		contentPane.add(heightPane, "Height Pane");
+		contentPane.add(weightPane, "Weight Pane");
+		contentPane.add(weightPane, "Weight Pane");
+		contentPane.add(sexPane, "Sex Pane");
+		contentPane.add(userPane, "User Pane");
 		clockPane = new ClockPane(contentPane);
 		stepsPane = new StepsPane(contentPane);
 		caloriesPane = new CaloriesPane(contentPane);
@@ -444,7 +693,7 @@ public class Display extends JFrame {
         contentPane.add(heartRatePane, "HeartRate Pane");
         contentPane.add(alarmResultPane, "AlarmResult Pane");
         contentPane.add(alarmPane, "Alarm Pane");
-        
+       
         // Update the contents every second
 		int delay = 1000; //milliseconds
 		ActionListener taskPerformer = new ActionListener() {
@@ -468,5 +717,6 @@ public class Display extends JFrame {
 		  new Timer(delay, taskPerformer).start();	  
 		  
 	}
+	
 
 }

@@ -2,15 +2,12 @@ package com.csci360.healthmonitor;
 
 public class ActivityFacade {
 	
+	// initialize the monitors to be used in the system 
 	private StepsMonitor sm;
 	private HeartRateMonitor hrm;
 	private CaloriesMonitor cm;
 	
 	public ActivityFacade() {
-		User user = User.getInstance();
-		user.setHeight(1.2);
-		user.setWeight(73.4);
-		user.setSex('M');
 		sm = new StepsMonitor();
 		hrm = new HeartRateMonitor();
 		cm = new CaloriesMonitor(hrm, sm);
@@ -26,15 +23,15 @@ public class ActivityFacade {
 	}
 	
 	public int getSteps() {
-		return sm.getCurrentSteps();
+		return sm.getCurrentSteps(); // get current steps walked by user 
 	}
 	
 	public float getHeartRate(){
-		return hrm.getCurrentHeartRate();
+		return hrm.getCurrentHeartRate(); // get current heart rate of user
 	}
 	
 	public double getCalories() {
-		return cm.getCalories(); 
+		return cm.getCalories(); // get current calories burned by user
 	}
 	
 }
