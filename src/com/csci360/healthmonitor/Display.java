@@ -336,17 +336,11 @@ public class Display extends JFrame {
 		
 	}
 	class HeartRatePane extends JPanel {
-<<<<<<< HEAD
 		/**
 		 * Creates a pane for displaying the heart rate 
 		 */
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
-=======
-
-	    private static final long serialVersionUID = 1L;
-	    private JPanel contentPane;
->>>>>>> b74f47bcca82f32d629cff15c553eb83a999e001
 	    private JButton nextPane;
 	    private JButton backPane;
 
@@ -403,13 +397,10 @@ public class Display extends JFrame {
 	    private JButton nextPane;
 	    private JButton backPane;
 
-<<<<<<< HEAD
-	    
-=======
+
 		/**
 		 * Creates a pane used for viewing the number of daily calories burned
 		 */
->>>>>>> b74f47bcca82f32d629cff15c553eb83a999e001
 		public CaloriesPane(JPanel panel) {
 			contentPane = panel;
 			setOpaque(true);
@@ -552,7 +543,6 @@ public class Display extends JFrame {
 	    private JButton backPane;
 	    private JButton alarm;
 
-<<<<<<< HEAD
 	    /**
 =======
 		/**
