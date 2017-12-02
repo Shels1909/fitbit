@@ -1,4 +1,4 @@
-package fitbit;
+package com.csci360.healthmonitor;
 
 import static org.junit.Assert.*;
 import org.junit.Test;

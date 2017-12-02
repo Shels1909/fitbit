@@ -1,10 +1,9 @@
-package fitbit;
+package com.csci360.healthmonitor;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.junit.Test;
 
 public class HeartRateMonitorTest {
 	private HeartRateMonitor hr;
